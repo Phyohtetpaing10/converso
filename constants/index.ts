@@ -5,6 +5,17 @@ export const subjects = [
   "history",
   "coding",
   "economics",
+export const subjectsColors = {
+  science: "#E5D0FF",
+  maths: "#FFDA6E",
+  language: "#BDE7FF",
+  coding: "#FFC8E4",
+  history: "#FFECC8",
+  economics: "#C8FFDF",
+  geography: "#D6E4FF",
+  finance: "#D9FBE5",
+  business: "#FFE0B8",
+};
 ];
 
 export const subjectsColors = {
