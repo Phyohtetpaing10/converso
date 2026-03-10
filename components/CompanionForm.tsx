@@ -28,7 +28,7 @@ const formSchema = z.object({
   topic: z.string().min(1, "Topic is required."),
   voice: z.string().min(1, "Voice is required."),
   style: z.string().min(1, "Style is required."),
-  duration: z.number().min(1, "Duration is required."),
+  duration: z.string().nonempty("Duration is required.").refine((val) => Number(val) >= 1, { message: "Duration must be at least 1 minute." }),
 });
 
 const CompanionForm = () => {
@@ -40,7 +40,7 @@ const CompanionForm = () => {
       topic: "",
       voice: "",
       style: "",
-      duration: 1,
+      duration: "",
     },
   });
 
@@ -80,7 +80,7 @@ const CompanionForm = () => {
                 value={field.value}
                 defaultValue={field.value}
               >
-                <SelectTrigger className="input capitalize">
+                <SelectTrigger className="input capitalize" aria-invalid={fieldState.invalid}>
                   <SelectValue placeholder="Select the subject" />
                 </SelectTrigger>
                 <SelectContent>
@@ -130,7 +130,7 @@ const CompanionForm = () => {
                 value={field.value}
                 defaultValue={field.value}
               >
-                <SelectTrigger className="input ">
+                <SelectTrigger className="input " aria-invalid={fieldState.invalid}>
                   <SelectValue placeholder="Select the voice" />
                 </SelectTrigger>
                 <SelectContent>
@@ -155,7 +155,7 @@ const CompanionForm = () => {
                 value={field.value}
                 defaultValue={field.value}
               >
-                <SelectTrigger className="input ">
+                <SelectTrigger className="input " aria-invalid={fieldState.invalid}>
                   <SelectValue placeholder="Select the style" />
                 </SelectTrigger>
                 <SelectContent>
@@ -179,11 +179,6 @@ const CompanionForm = () => {
                 {...field}
                 type="number"
                 min={1}
-                onChange={(e) =>
-                  field.onChange(
-                    e.target.value === "" ? "" : Number(e.target.value),
-                  )
-                }
                 id="duration"
                 aria-invalid={fieldState.invalid}
                 placeholder="Enter the duration"
