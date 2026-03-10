@@ -28,11 +28,21 @@ const formSchema = z.object({
   topic: z.string().min(1, "Topic is required."),
   voice: z.string().min(1, "Voice is required."),
   style: z.string().min(1, "Style is required."),
-  duration: z.string().nonempty("Duration is required.").refine((val) => Number(val) >= 1, { message: "Duration must be at least 1 minute." }),
+  duration: z
+    .string()
+    .nonempty("Duration is required.")
+    .refine((val) => Number(val) >= 1, {
+      message: "Duration must be at least 1 minute.",
+    })
+    .transform(Number),
 });
 
 const CompanionForm = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<
+    z.input<typeof formSchema>,
+    unknown,
+    z.output<typeof formSchema>
+  >({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -44,7 +54,7 @@ const CompanionForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.output<typeof formSchema>) => {
     console.log(values);
   };
 
@@ -80,7 +90,10 @@ const CompanionForm = () => {
                 value={field.value}
                 defaultValue={field.value}
               >
-                <SelectTrigger className="input capitalize" aria-invalid={fieldState.invalid}>
+                <SelectTrigger
+                  className="input capitalize"
+                  aria-invalid={fieldState.invalid}
+                >
                   <SelectValue placeholder="Select the subject" />
                 </SelectTrigger>
                 <SelectContent>
@@ -130,7 +143,10 @@ const CompanionForm = () => {
                 value={field.value}
                 defaultValue={field.value}
               >
-                <SelectTrigger className="input " aria-invalid={fieldState.invalid}>
+                <SelectTrigger
+                  className="input "
+                  aria-invalid={fieldState.invalid}
+                >
                   <SelectValue placeholder="Select the voice" />
                 </SelectTrigger>
                 <SelectContent>
@@ -155,7 +171,10 @@ const CompanionForm = () => {
                 value={field.value}
                 defaultValue={field.value}
               >
-                <SelectTrigger className="input " aria-invalid={fieldState.invalid}>
+                <SelectTrigger
+                  className="input "
+                  aria-invalid={fieldState.invalid}
+                >
                   <SelectValue placeholder="Select the style" />
                 </SelectTrigger>
                 <SelectContent>
